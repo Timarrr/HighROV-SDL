@@ -82,8 +82,8 @@ struct RovControl {
 };
 Q_DECLARE_METATYPE(RovControl)
 
-struct RovTelimetry {
-    enum class RovTelimetryErrorCode : int {
+struct RovTelemetry {
+    enum class RovTelemetryErrorCode : int {
         NoError = 0,
         WrongCrc = 1,
         WrongDataSize = 2,
@@ -105,7 +105,7 @@ struct RovTelimetry {
     qint8 manipulatorState = 0; //! -1 close/+1 open;
     qint8 cameraIndex = 0;
 
-    RovTelimetryErrorCode fromRangerTelimetryMsgV1(QByteArray& ba)
+    RovTelemetryErrorCode fromRangerTelemetryMsgV1(QByteArray& ba)
     {
         QDataStream out(&ba, QIODevice::ReadOnly);
         out.setFloatingPointPrecision(QDataStream::SinglePrecision);
@@ -134,13 +134,13 @@ struct RovTelimetry {
             regulatorsFeedback = 0;
             manipulatorAngle = 0;
             manipulatorState = 0;
-            return RovTelimetryErrorCode::WrongCrc;
+            return RovTelemetryErrorCode::WrongCrc;
         }
 
-        return RovTelimetryErrorCode::NoError;
+        return RovTelemetryErrorCode::NoError;
     }
 
-    RovTelimetryErrorCode fromRangerTelimetryMsgV2(QByteArray& ba)
+    RovTelemetryErrorCode fromRangerTelemetryMsgV2(QByteArray& ba)
     {
         QDataStream out(&ba, QIODevice::ReadOnly);
         out.setFloatingPointPrecision(QDataStream::SinglePrecision);
@@ -174,23 +174,23 @@ struct RovTelimetry {
             manipulatorAngle = 0;
             manipulatorState = 0;
             cameraIndex = 0;
-            return RovTelimetryErrorCode::WrongCrc;
+            return RovTelemetryErrorCode::WrongCrc;
         }
 
-        return RovTelimetryErrorCode::NoError;
+        return RovTelemetryErrorCode::NoError;
     }
 
-    static QString fromErrorToString(RovTelimetryErrorCode ec)
+    static QString fromErrorToString(RovTelemetryErrorCode ec)
     {
-        QMap<RovTelimetryErrorCode, QString> ec2str;
-        ec2str[RovTelimetryErrorCode::NoError] = "No error";
-        ec2str[RovTelimetryErrorCode::WrongCrc] = "CRC missmatch";
-        ec2str[RovTelimetryErrorCode::WrongDataSize] = "Wrong data size";
+        QMap<RovTelemetryErrorCode, QString> ec2str;
+        ec2str[RovTelemetryErrorCode::NoError] = "No error";
+        ec2str[RovTelemetryErrorCode::WrongCrc] = "CRC missmatch";
+        ec2str[RovTelemetryErrorCode::WrongDataSize] = "Wrong data size";
 
         return ec2str[ec];
     }
 };
-Q_DECLARE_METATYPE(RovTelimetry)
+Q_DECLARE_METATYPE(RovTelemetry)
 
 struct RovHello {
     static const uint8_t header_hello = 0xAA;

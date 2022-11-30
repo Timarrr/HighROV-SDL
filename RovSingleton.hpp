@@ -11,7 +11,7 @@ public:
 
     static RovSingleton* instance();
 
-    RovTelimetry& telimetry();
+    RovTelemetry& telemetry();
 
     RovControl& control();
 
@@ -22,7 +22,7 @@ public:
     void setThrustScaleFactor(float scale);
     int depthRegulator();
 signals:
-    void telimetryUpdated();
+    void telemetryUpdated();
 
 private:
     explicit RovSingleton(QObject* parent = nullptr);
@@ -36,6 +36,6 @@ private:
     QScopedPointer<RovUdpConnection> m_udpConnection;
 
     RovControl m_controlData;
-    RovTelimetry m_telimetry;
+    RovTelemetry m_telemetry;
     float m_scaleFactor = 1.0f;
 };

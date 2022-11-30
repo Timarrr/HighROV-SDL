@@ -12,7 +12,7 @@ SOURCES += \
     main.cpp \
     MainWindow.cpp \
     Crc.cpp \
-    RovTelimetryWidget.cpp \
+    RovTelemetryWidget.cpp \
     RovCameraWidget.cpp \
     ScaleFactorWidget.cpp \
     RovSingleton.cpp \
@@ -28,7 +28,7 @@ HEADERS += \
     SDLJoystickSettingsDialog.hpp \
     Singleton.hpp \
     Crc.hpp \
-    RovTelimetryWidget.hpp \
+    RovTelemetryWidget.hpp \
     RovCameraWidget.hpp \
     ScaleFactorWidget.hpp \
     RovSingleton.hpp \

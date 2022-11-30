@@ -32,7 +32,7 @@ void LogWidget::createConnections()
         }
     });
 
-    QObject::connect(RovSingleton::instance(), &RovSingleton::telimetryUpdated, [this]() {
+    QObject::connect(RovSingleton::instance(), &RovSingleton::telemetryUpdated, [this]() {
         if (!m_isStarted) {
             return;
         }
@@ -41,7 +41,7 @@ void LogWidget::createConnections()
             qWarning() << "Максимальный размер лога достигнут!";
             return;
         }
-        m_logData.push_back({ QDateTime::currentDateTime(), RovSingleton::instance()->telimetry() });
+        m_logData.push_back({ QDateTime::currentDateTime(), RovSingleton::instance()->telemetry() });
         m_logRecordsCount.data()->setText(QString("Количество записей: %1").arg(m_logData.size()));
     });
 
@@ -59,7 +59,7 @@ void LogWidget::createConnections()
                 stream << r.second.ammeter << ",";
                 stream << r.second.voltmeter << ",";
                 stream << r.second.depth << ",";
-                stream << r.second.regulatorsFeedback << endl;
+                stream << r.second.regulatorsFeedback << Qt::endl;
             }
             qInfo() << "Лог файл успешно записан.";
 

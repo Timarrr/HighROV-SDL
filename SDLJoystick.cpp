@@ -10,7 +10,7 @@ float map(float x, float in_min, float in_max, float out_min, float out_max){
 
 SDLJoystick::SDLJoystick(QObject *parent)
     : QObject{parent}
-    , m_jsd(new SDLJoystickSettingsDialog)
+    , m_settings(new QSettings("RovSettings.ini", QSettings::IniFormat))
 {
     SDL_Init(SDL_INIT_JOYSTICK);
     m_joystick = SDL_JoystickOpen(0);
@@ -53,8 +53,11 @@ bool SDLJoystick::isConnected(){
     return (bool)SDLJoystick::m_joystick;
 }
 
-SDL_Joystick* SDLJoystick::get_joystick(){
-    return m_joystick;
+int SDLJoystick::get_num_axes(){
+    return SDL_JoystickNumAxes(m_joystick);
+}
+int SDLJoystick::get_num_buttons(){
+    return SDL_JoystickNumButtons(m_joystick);
 }
 
 
@@ -62,11 +65,11 @@ void SDLJoystick::timerEvent(QTimerEvent*){
     SDL_JoystickUpdate();
     if(isConnected()){
         // getting data from joystick
-        m_x = map(SDL_JoystickGetAxis(m_joystick, 0), -32768, 32767, -100, 100);
-        m_y = map(SDL_JoystickGetAxis(m_joystick, 1), -32768, 32767, -100, 100);
-        m_z = map(SDL_JoystickGetAxis(m_joystick, 2), -32768, 32767, -100, 100);
-        m_w = map(SDL_JoystickGetAxis(m_joystick, 3), -32768, 32767, -100, 100);
-        m_d = map(SDL_JoystickGetAxis(m_joystick, 4), -32768, 32767, -100, 100);
+        m_x = map(SDL_JoystickGetAxis(m_joystick, m_x_id), -32768, 32767, -100, 100) * (-1 * m_x_inv);
+        m_y = map(SDL_JoystickGetAxis(m_joystick, m_y_id), -32768, 32767, -100, 100) * (-1 * m_y_inv);
+        m_z = map(SDL_JoystickGetAxis(m_joystick, m_z_id), -32768, 32767, -100, 100) * (-1 * m_z_inv);
+        m_w = map(SDL_JoystickGetAxis(m_joystick, m_w_id), -32768, 32767, -100, 100) * (-1 * m_w_inv);
+        m_d = map(SDL_JoystickGetAxis(m_joystick, m_d_id), -32768, 32767, -100, 100) * (-1 * m_d_inv);
         m_x = (m_x + m_x_old)/2;
         m_y = (m_y + m_y_old)/2;
         m_z = (m_z + m_z_old)/2;
@@ -80,7 +83,7 @@ void SDLJoystick::timerEvent(QTimerEvent*){
 //        qDebug() << "W: " << m_w << " X: " << m_x << " Y: " << m_y << " Z: " << m_z << " D: " << m_d << Qt::endl;
         //cameras
         int hat = SDL_JoystickGetHat(m_joystick, 0);
-        m_servo_y = hat==0?0:hat==1?1:hat==4?-1:0;
+        m_servo_y = hat==1?1:hat==4?-1:0;
 
         //manipulator
         m_manipulator_open_close = SDL_JoystickGetButton(m_joystick, 1) - SDL_JoystickGetButton(m_joystick, 0);
@@ -115,12 +118,8 @@ void SDLJoystick::timerEvent(QTimerEvent*){
             m_joystick = SDL_JoystickOpen(0);
         }
         else{
-            qDebug() << "No joystick found" << endl;
+            qDebug() << "No joystick found" << Qt::endl;
 
         }
     }
-}
-
-SDLJoystickSettingsDialog *SDLJoystick::settingsDialog(){
-    return m_jsd.data();
 }

@@ -4,7 +4,7 @@
 #include "LogWidget.hpp"
 #include "RegulatorsWidget.hpp"
 #include "RovCameraWidget.hpp"
-#include "RovTelimetryWidget.hpp"
+#include "RovTelemetryWidget.hpp"
 #include "ScaleFactorWidget.hpp"
 #include "SDLJoystick.hpp"
 #include <QAction>
@@ -49,13 +49,14 @@ private:
     QScopedPointer<QAction> m_openJoystickSettings;
     QScopedPointer<QAction> m_openDebugDialog;
 
-    QScopedPointer<RovTelimetryWidget> m_telimetryWidget;
+    QScopedPointer<RovTelemetryWidget> m_telemetryWidget;
 
     QScopedPointer<ScaleFactorWidget> m_scaleWidget;
     QScopedPointer<RegulatorsWidget> m_regulatorsWidget;
     QScopedPointer<SDLJoystick> m_joystick;
     QScopedPointer<DebugDialog> m_debugDialog;
     QScopedPointer<LogWidget> m_logFileWidget;
+    QScopedPointer<SDLJoystickSettingsDialog> m_jsd;
 
     //mosaic
     QScopedPointer<QAction> m_takeMosaicPhoto;

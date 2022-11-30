@@ -23,7 +23,7 @@ void RegulatorsWidget::createConnections()
         std::bitset<8> regulator;
         //regulator[0] = m_depthRegulator.data()->isChecked();
         //RovSingleton::instance()->control().regulators = static_cast<quint8>(regulator.to_ulong());
-        keepingDepth = RovSingleton::instance()->telimetry().depth;
+        keepingDepth = RovSingleton::instance()->telemetry().depth;
         //is_depth = m_depthRegulator.data()->isChecked();
     });
 
@@ -32,7 +32,7 @@ void RegulatorsWidget::createConnections()
         std::bitset<8> regulator;
         //regulator[0] = m_depthRegulator.data()->isChecked();
         //RovSingleton::instance()->control().regulators = static_cast<quint8>(regulator.to_ulong());
-        keepingYaw = RovSingleton::instance()->telimetry().yaw;
+        keepingYaw = RovSingleton::instance()->telemetry().yaw;
         is_yaw = m_yawRegulator.data()->isChecked();
     });
 
@@ -41,7 +41,7 @@ void RegulatorsWidget::createConnections()
         std::bitset<8> regulator;
         //regulator[0] = m_depthRegulator.data()->isChecked();
         //RovSingleton::instance()->control().regulators = static_cast<quint8>(regulator.to_ulong());
-        keepingRoll = RovSingleton::instance()->telimetry().roll;
+        keepingRoll = RovSingleton::instance()->telemetry().roll;
         is_roll = m_rollRegulator.data()->isChecked();
     });
 
@@ -50,7 +50,7 @@ void RegulatorsWidget::createConnections()
         std::bitset<8> regulator;
         //regulator[0] = m_depthRegulator.data()->isChecked();
         //RovSingleton::instance()->control().regulators = static_cast<quint8>(regulator.to_ulong());
-        keepingPitch = RovSingleton::instance()->telimetry().pitch;
+        keepingPitch = RovSingleton::instance()->telemetry().pitch;
         is_pitch = m_pitchRegulator.data()->isChecked();
     });
 
@@ -93,7 +93,7 @@ int RegulatorsWidget::depthRegulator()
 {
 //    if (is_depth)
 //    {
-//        float error = RovSingleton::instance()->telimetry().depth - keepingDepth;
+//        float error = RovSingleton::instance()->telemetry().depth - keepingDepth;
 
 //        float m_power = 0;
 
@@ -103,7 +103,7 @@ int RegulatorsWidget::depthRegulator()
 //    //    m_power = clamp(power_value + diff_value, 100, -100);
 //        m_power = clamp(power_value, 100, -100);
 
-//        qDebug() << "Power: " << m_power << " now:" << RovSingleton::instance()->telimetry().depth << " keep:" << keepingDepth;
+//        qDebug() << "Power: " << m_power << " now:" << RovSingleton::instance()->telemetry().depth << " keep:" << keepingDepth;
 //        return m_power;
 //    }
     return 0;
@@ -115,7 +115,7 @@ void RegulatorsWidget::yawRegulator()
     {
         float current_time = QDateTime::currentMSecsSinceEpoch();
 
-        float error = RovSingleton::instance()->telimetry().yaw - keepingYaw;
+        float error = RovSingleton::instance()->telemetry().yaw - keepingYaw;
         error = clamp_to180(error);
 
         float power_0 = 0;
@@ -141,7 +141,7 @@ void RegulatorsWidget::rollRegulator()
     {
         float current_time = QDateTime::currentMSecsSinceEpoch();
 
-        float error = RovSingleton::instance()->telimetry().roll - keepingRoll;
+        float error = RovSingleton::instance()->telemetry().roll - keepingRoll;
         error = clamp_to180(error);
 
         float power_0 = 0;
@@ -167,7 +167,7 @@ void RegulatorsWidget::pitchRegulator()
     {
         float current_time = QDateTime::currentMSecsSinceEpoch();
 
-        float error = RovSingleton::instance()->telimetry().pitch - keepingPitch;
+        float error = RovSingleton::instance()->telemetry().pitch - keepingPitch;
         error = clamp_to180(error);
 
         float power_0 = 0;

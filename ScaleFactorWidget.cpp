@@ -25,21 +25,21 @@ void ScaleFactorWidget::createLayout()
 
 void ScaleFactorWidget::createConnections()
 {
-    QObject::connect(m_fiftyButton.data(), &QRadioButton::clicked, [this](bool isCheced) {
+    QObject::connect(m_fiftyButton.data(), &QRadioButton::clicked, [](bool isCheced) {
         if (isCheced) {
             RovSingleton::instance()->setThrustScaleFactor(0.5f);
             qInfo() << "Установленио ограничение в 50% тяги";
         }
     });
 
-    QObject::connect(m_twentyFive.data(), &QRadioButton::clicked, [this](bool isCheced) {
+    QObject::connect(m_twentyFive.data(), &QRadioButton::clicked, [](bool isCheced) {
         if (isCheced) {
             RovSingleton::instance()->setThrustScaleFactor(0.25f);
             qInfo() << "Установленио ограничение в 25% тяги";
         }
     });
 
-    QObject::connect(m_oneHundred.data(), &QRadioButton::clicked, [this](bool isCheced) {
+    QObject::connect(m_oneHundred.data(), &QRadioButton::clicked, [](bool isCheced) {
         if (isCheced) {
             RovSingleton::instance()->setThrustScaleFactor(1.0f);
             qInfo() << "Установленио ограничение в 100% тяги";

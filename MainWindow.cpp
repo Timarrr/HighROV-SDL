@@ -11,12 +11,13 @@ QTextEdit* MainWindow::logWidget = nullptr;
 MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent)
     , m_cameraWidget(new RovCameraWidget(this))
-    , m_telimetryWidget(new RovTelimetryWidget(this))
+    , m_telemetryWidget(new RovTelemetryWidget(this))
     , m_scaleWidget(new ScaleFactorWidget(this))
     , m_regulatorsWidget(new RegulatorsWidget(this))
     , m_joystick(new SDLJoystick(this))
     , m_debugDialog(new DebugDialog(this))
     , m_logFileWidget(new LogWidget(this))
+    , m_jsd(new SDLJoystickSettingsDialog(this, (void*)m_joystick.data()))
 {
     logWidget = new QTextEdit;
     createActions();
@@ -25,12 +26,6 @@ MainWindow::MainWindow(QWidget* parent)
     createDocks();
     setCentralWidget(m_cameraWidget.data());
     setMinimumSize(640, 480);
-
-    transectTimer = new QTimer(this);
-    transectTimer->setInterval(20);
-    transectTimer->start();
-
-    connect(transectTimer, &QTimer::timeout, this, &MainWindow::transect);
 }
 
 MainWindow::~MainWindow() {}
@@ -76,9 +71,9 @@ void MainWindow::createDocks()
     QMenu* view = menuBar()->addMenu(tr("&Вид"));
 
     QDockWidget* consDock = new QDockWidget(tr("Телеметрия"), this);
-    consDock->setObjectName("TelimetryDockWidget");
+    consDock->setObjectName("TelemetryDockWidget");
     consDock->setFeatures(QDockWidget::DockWidgetClosable | QDockWidget::DockWidgetMovable);
-    consDock->setWidget(m_telimetryWidget.data());
+    consDock->setWidget(m_telemetryWidget.data());
     addDockWidget(Qt::LeftDockWidgetArea, consDock);
     view->addAction(consDock->toggleViewAction());
 
@@ -124,7 +119,7 @@ void MainWindow::createConnections()
         RovSingleton::instance()->control().cameraIndex = (RovSingleton::instance()->control().cameraIndex + 1) % 2;
     });
     QObject::connect(m_openJoystickSettings.data(), &QAction::triggered, [this](bool) {
-        m_joystick.data()->settingsDialog()->show();
+        m_jsd->show();
     });
     QObject::connect(m_openDebugDialog.data(), &QAction::triggered, [this](bool) {
         m_debugDialog.data()->show();
@@ -185,8 +180,8 @@ void MainWindow::createConnections()
 
     //transect
     QObject::connect(m_startStopTransect.data(), &QAction::triggered, [this](bool) {
-        keepingDepth = RovSingleton::instance()->telimetry().depth;
-        keepingYaw = RovSingleton::instance()->telimetry().yaw;
+        keepingDepth = RovSingleton::instance()->telemetry().depth;
+        keepingYaw = RovSingleton::instance()->telemetry().yaw;
         isTransect = !isTransect;
     });
 }
@@ -478,8 +473,8 @@ void MainWindow::transect()
     {
 //        float current_time = QDateTime::currentMSecsSinceEpoch();
 
-//        float depth_error = RovSingleton::instance()->telimetry().depth - keepingDepth;
-//        float yaw_error = RovSingleton::instance()->telimetry().yaw - keepingYaw;
+//        float depth_error = RovSingleton::instance()->telemetry().depth - keepingDepth;
+//        float yaw_error = RovSingleton::instance()->telemetry().yaw - keepingYaw;
 
 //        float z_power = 0;
 //        float power1 = 0;
@@ -497,8 +492,4 @@ void MainWindow::transect()
 //        m_depth_prev_time = current_time;
 //        m_depth_prev_error = error;
     }
-}
-
-SDLJoystick* MainWindow::get_joystick(){
-    return m_joystick.data();
 }

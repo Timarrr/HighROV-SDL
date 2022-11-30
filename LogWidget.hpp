@@ -20,7 +20,7 @@ private:
     void createConnections();
     void createLayout();
 
-    QVector<QPair<QDateTime, RovTelimetry>> m_logData;
+    QVector<QPair<QDateTime, RovTelemetry>> m_logData;
     QScopedPointer<QPushButton> m_startStopButton;
     QScopedPointer<QPushButton> m_saveLogButton;
     QScopedPointer<QLabel> m_logRecordsCount;

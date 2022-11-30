@@ -14,8 +14,8 @@ RovSingleton* RovSingleton::instance()
     return Singleton<RovSingleton>::instance(RovSingleton::createInstance);
 }
 
-RovTelimetry& RovSingleton::telimetry() {
-    return m_telimetry;
+RovTelemetry& RovSingleton::telemetry() {
+    return m_telemetry;
 }
 
 RovControl& RovSingleton::control()
@@ -58,24 +58,24 @@ void RovSingleton::createConnections()
     QObject::connect(m_udpConnection.data(), &RovUdpConnection::dataReceived,
         [this](QByteArray datagram) {
             if (datagram.size() == 4 && quint8(datagram[0]) == RovHello::header_hello) {
-                m_telimetry.version = RovHello::getVersion(datagram);
+                m_telemetry.version = RovHello::getVersion(datagram);
                 return;
             }
 
-            RovTelimetry::RovTelimetryErrorCode ec = RovTelimetry::RovTelimetryErrorCode::WrongDataSize; // TODO?
+            RovTelemetry::RovTelemetryErrorCode ec = RovTelemetry::RovTelemetryErrorCode::WrongDataSize; // TODO?
 
             if (datagram.size() == 29) { // probably v1 telemetry msg
-                ec = m_telimetry.fromRangerTelimetryMsgV1(datagram);
-            } else if (quint8(datagram[0]) == RovTelimetry::header_telemetry) {
-                ec = m_telimetry.fromRangerTelimetryMsgV2(datagram);
+                ec = m_telemetry.fromRangerTelemetryMsgV1(datagram);
+            } else if (quint8(datagram[0]) == RovTelemetry::header_telemetry) {
+                ec = m_telemetry.fromRangerTelemetryMsgV2(datagram);
             }
 
-            if (ec != RovTelimetry::RovTelimetryErrorCode::NoError) {
-                qInfo() << RovTelimetry::fromErrorToString(ec);
+            if (ec != RovTelemetry::RovTelemetryErrorCode::NoError) {
+                qInfo() << RovTelemetry::fromErrorToString(ec);
                 return;
             }
 
-            emit telimetryUpdated();
+            emit telemetryUpdated();
         });
 
     QObject::connect(m_transmitTimer.data(), &QTimer::timeout, [this]() {
@@ -109,7 +109,7 @@ void RovSingleton::createConnections()
 //                duration = duration_now;
 //            }
 
-            if (m_telimetry.version == 2) {
+            if (m_telemetry.version == 2) {
                 auto data = m_controlData.toRangerControlMsgV2();
                 m_udpConnection->transmitDatagram(data);
             } else {

@@ -1,5 +1,6 @@
 #ifndef SDLJOYSTICKSETTINGSDIALOG_H
 #define SDLJOYSTICKSETTINGSDIALOG_H
+#pragma once
 
 #include <QCheckBox>
 #include <QComboBox>
@@ -11,10 +12,7 @@ class SDLJoystickSettingsDialog : public QDialog
 {
     Q_OBJECT
 public:
-    SDLJoystickSettingsDialog(QWidget* parent = nullptr);
-    int wAxis();
-    bool isWInverted();
-    void setWAxis(int axis, bool inverse);
+    SDLJoystickSettingsDialog(QWidget* parent = nullptr, void* m_joystick = nullptr);
 
     int xAxis();
     bool isXInverted();
@@ -27,6 +25,14 @@ public:
     int zAxis();
     bool isZInverted();
     void setZAxis(int axis, bool inverse);
+
+    int wAxis();
+    bool isWInverted();
+    void setWAxis(int axis, bool inverse);
+
+    int dAxis();
+    bool isDInverted();
+    void setDAxis(int axis, bool inverse);
 
     int servoXAxis();
     bool isServoXInverted();
@@ -49,8 +55,8 @@ public:
     int cameraSelectButton();
     void setCameraSelectButton(int button);
 private:
-    void readSettings();
-    void createLayout();
+    void readSettings(void* joystick_ptr = nullptr);
+    void createLayout(void* joystick_ptr = nullptr);
     void createConnections();
 
     QScopedPointer<QSettings> m_settings;
@@ -76,13 +82,14 @@ private:
 
     QScopedPointer<QLabel> m_joystickStatus;
 
-    int m_xAxis;
-    int m_yAxis;
-    int m_zAxis;
-    int m_wAxis;
-    int m_servoXAxis;
-    int m_servoYAxis;
-    int m_manipulatorAxis;
+    int m_xID;
+    int m_yID;
+    int m_zID;
+    int m_wID;
+    int m_dID;
+    int m_sxID;
+    int m_syID;
+    int m_mID;
 
     enum joystickAxes{
         Y = 0,
