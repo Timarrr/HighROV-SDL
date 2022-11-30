@@ -14,36 +14,21 @@ class SDLJoystickSettingsDialog : public QDialog
 public:
     SDLJoystickSettingsDialog(QWidget* parent = nullptr, void* m_joystick = nullptr);
 
-    int xAxis();
-    bool isXInverted();
+
     void setXAxis(int axis, bool inverse);
 
-    int yAxis();
-    bool isYInverted();
     void setYAxis(int axis, bool inverse);
 
-    int zAxis();
-    bool isZInverted();
     void setZAxis(int axis, bool inverse);
 
-    int wAxis();
-    bool isWInverted();
     void setWAxis(int axis, bool inverse);
 
-    int dAxis();
-    bool isDInverted();
     void setDAxis(int axis, bool inverse);
 
-    int servoXAxis();
-    bool isServoXInverted();
     void setServoXAxis(int axis, bool inverse);
 
-    int servoYAxis();
-    bool isServoYInverted();
     void setServoYAxis(int axis, bool inverse);
 
-    int manipulatorAxis();
-    bool isManipulatorInverted();
     void setManipulatorAxis(int axis, bool inverse);
 
     int manipulatorOpenButton();
@@ -65,6 +50,7 @@ private:
     QScopedPointer<QComboBox> m_xAxisList;
     QScopedPointer<QComboBox> m_yAxisList;
     QScopedPointer<QComboBox> m_zAxisList;
+    QScopedPointer<QComboBox> m_dAxisList;
     QScopedPointer<QComboBox> m_servoXList;
     QScopedPointer<QComboBox> m_servoYList;
     QScopedPointer<QComboBox> m_openManipulatorList;
@@ -76,11 +62,10 @@ private:
     QScopedPointer<QCheckBox> m_xAxisInv;
     QScopedPointer<QCheckBox> m_yAxisInv;
     QScopedPointer<QCheckBox> m_zAxisInv;
+    QScopedPointer<QCheckBox> m_dAxisInv;
     QScopedPointer<QCheckBox> m_servoXInv;
     QScopedPointer<QCheckBox> m_servoYInv;
     QScopedPointer<QCheckBox> m_manipulatorInv;
-
-    QScopedPointer<QLabel> m_joystickStatus;
 
     int m_xID;
     int m_yID;
@@ -109,6 +94,7 @@ private:
     bool m_isXInv = false;
     bool m_isYInv = false;
     bool m_isZInv = false;
+    bool m_isDInv = false;
     bool m_isWInv = false;
     bool m_isServoXInv = false;
     bool m_isServoYInv = false;

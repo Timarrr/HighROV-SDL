@@ -64,6 +64,21 @@ int SDLJoystick::get_num_buttons(){
 void SDLJoystick::timerEvent(QTimerEvent*){
     SDL_JoystickUpdate();
     if(isConnected()){
+        //refresh settings
+        m_settings->beginGroup("JoystickAxes");
+        m_x_id = static_cast<int>(m_settings->value("XID").toInt());
+        m_y_id = static_cast<int>(m_settings->value("YID").toInt());
+        m_z_id = static_cast<int>(m_settings->value("ZID").toInt());
+        m_w_id = static_cast<int>(m_settings->value("WID").toInt());
+        m_d_id = static_cast<int>(m_settings->value("DID").toInt());
+        m_x_inv = static_cast<int>(m_settings->value("XInverse").toInt());
+        m_y_inv = static_cast<int>(m_settings->value("YInverse").toInt());
+        m_z_inv = static_cast<int>(m_settings->value("ZInverse").toInt());
+        m_w_inv = static_cast<int>(m_settings->value("WInverse").toInt());
+        m_d_inv = static_cast<int>(m_settings->value("DInverse").toInt());
+
+
+
         // getting data from joystick
         m_x = map(SDL_JoystickGetAxis(m_joystick, m_x_id), -32768, 32767, -100, 100) * (-1 * m_x_inv);
         m_y = map(SDL_JoystickGetAxis(m_joystick, m_y_id), -32768, 32767, -100, 100) * (-1 * m_y_inv);

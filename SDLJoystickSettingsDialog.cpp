@@ -14,6 +14,7 @@ SDLJoystickSettingsDialog::SDLJoystickSettingsDialog(QWidget* parent, void* joys
     , m_xAxisList(new QComboBox(this))
     , m_yAxisList(new QComboBox(this))
     , m_zAxisList(new QComboBox(this))
+    , m_dAxisList(new QComboBox(this))
     , m_servoXList(new QComboBox(this))
     , m_servoYList(new QComboBox(this))
     , m_openManipulatorList(new QComboBox(this))
@@ -24,11 +25,10 @@ SDLJoystickSettingsDialog::SDLJoystickSettingsDialog(QWidget* parent, void* joys
     , m_xAxisInv(new QCheckBox(this))
     , m_yAxisInv(new QCheckBox(this))
     , m_zAxisInv(new QCheckBox(this))
+    , m_dAxisInv(new QCheckBox(this))
     , m_servoXInv(new QCheckBox(this))
     , m_servoYInv(new QCheckBox(this))
     , m_manipulatorInv(new QCheckBox(this))
-    , m_joystickStatus(new QLabel(this))
-
 {
     SDLJoystick* m_joystick = (SDLJoystick*) joystick_ptr;
     readSettings(m_joystick);
@@ -36,163 +36,83 @@ SDLJoystickSettingsDialog::SDLJoystickSettingsDialog(QWidget* parent, void* joys
     createConnections();
 }
 
-int SDLJoystickSettingsDialog::xAxis()
-{
-    return m_xID;
-}
-
-bool SDLJoystickSettingsDialog::isXInverted()
-{
-    return m_isXInv;
-}
-
 void SDLJoystickSettingsDialog::setXAxis(int axis, bool inverse)
 {
     m_settings->beginGroup("JoystickAxes");
-    m_settings->setValue("JoystickAxisX", axis);
-    m_settings->setValue("JoystickAxisXIsInv", inverse);
+    m_settings->setValue("XID", axis);
+    m_settings->setValue("XInverse", inverse);
 
     m_xID = axis;
     m_isXInv = inverse;
     m_settings->endGroup();
 }
 
-int SDLJoystickSettingsDialog::yAxis()
-{
-    return m_yID;
-}
-
-bool SDLJoystickSettingsDialog::isYInverted()
-{
-    return m_isYInv;
-}
-
 void SDLJoystickSettingsDialog::setYAxis(int axis, bool inverse)
 {
     m_settings->beginGroup("JoystickAxes");
-    m_settings->setValue("JoystickAxisY", axis);
-    m_settings->setValue("JoystickAxisYIsInv", inverse);
+    m_settings->setValue("YID", axis);
+    m_settings->setValue("YInverse", inverse);
 
     m_yID = axis;
     m_isYInv = inverse;
     m_settings->endGroup();
 }
 
-int SDLJoystickSettingsDialog::zAxis()
-{
-    return m_zID;
-}
-
-bool SDLJoystickSettingsDialog::isZInverted()
-{
-    return m_isZInv;
-}
-
 void SDLJoystickSettingsDialog::setZAxis(int axis, bool inverse)
 {
     m_settings->beginGroup("JoystickAxes");
-    m_settings->setValue("JoystickAxisZ", axis);
-    m_settings->setValue("JoystickAxisZIsInv", inverse);
+    m_settings->setValue("ZID", axis);
+    m_settings->setValue("ZInverse", inverse);
     m_zID = axis;
     m_isZInv = inverse;
     m_settings->endGroup();
 }
 
-int SDLJoystickSettingsDialog::wAxis()
-{
-    return m_wID;
-}
-
-bool SDLJoystickSettingsDialog::isWInverted()
-{
-    return m_isWInv;
-}
-
 void SDLJoystickSettingsDialog::setWAxis(int axis, bool inverse)
 {
     m_settings->beginGroup("JoystickAxes");
-    m_settings->setValue("JoystickAxisW", axis);
-    m_settings->setValue("JoystickAxisWIsInv", inverse);
+    m_settings->setValue("WID", axis);
+    m_settings->setValue("WInverse", inverse);
     m_wID = axis;
     m_isWInv = inverse;
     m_settings->endGroup();
-}
-
-int SDLJoystickSettingsDialog::dAxis()
-{
-    return m_wID;
-}
-
-bool SDLJoystickSettingsDialog::isDInverted()
-{
-    return m_isWInv;
 }
 
 void SDLJoystickSettingsDialog::setDAxis(int axis, bool inverse)
 {
     m_settings->beginGroup("JoystickAxes");
-    m_settings->setValue("JoystickAxisW", axis);
-    m_settings->setValue("JoystickAxisWIsInv", inverse);
+    m_settings->setValue("DID", axis);
+    m_settings->setValue("DInverse", inverse);
     m_wID = axis;
     m_isWInv = inverse;
     m_settings->endGroup();
 }
 
-int SDLJoystickSettingsDialog::servoXAxis()
-{
-    return m_sxID;
-}
-
-bool SDLJoystickSettingsDialog::isServoXInverted()
-{
-    return m_isServoXInv;
-}
-
 void SDLJoystickSettingsDialog::setServoXAxis(int axis, bool inverse)
 {
     m_settings->beginGroup("JoystickAxes");
-    m_settings->setValue("JoystickServoXAxis", axis);
-    m_settings->setValue("JoystickServoXAxisInv", inverse);
+    m_settings->setValue("sXID", axis);
+    m_settings->setValue("sXInverse", inverse);
     m_sxID = axis;
     m_isServoXInv = inverse;
     m_settings->endGroup();
 }
 
-int SDLJoystickSettingsDialog::servoYAxis()
-{
-    return m_syID;
-}
-
-bool SDLJoystickSettingsDialog::isServoYInverted()
-{
-    return m_isServoYInv;
-}
-
 void SDLJoystickSettingsDialog::setServoYAxis(int axis, bool inverse)
 {
     m_settings->beginGroup("JoystickAxes");
-    m_settings->setValue("JoystickServoYAxis", axis);
-    m_settings->setValue("JoystickServoYAxisInv", inverse);
+    m_settings->setValue("sYID", axis);
+    m_settings->setValue("sYInverse", inverse);
     m_syID = axis;
     m_isServoYInv = inverse;
     m_settings->endGroup();
 }
 
-int SDLJoystickSettingsDialog::manipulatorAxis()
-{
-    return m_mID;
-}
-
-bool SDLJoystickSettingsDialog::isManipulatorInverted()
-{
-    return m_isManipulatorInv;
-}
-
 void SDLJoystickSettingsDialog::setManipulatorAxis(int axis, bool inverse)
 {
     m_settings->beginGroup("JoystickAxes");
-    m_settings->setValue("JoystickManipulatorAxis", axis);
-    m_settings->setValue("JoystickManipulatorAxisInv", inverse);
+    m_settings->setValue("mID", axis);
+    m_settings->setValue("mInverse", inverse);
     m_mID = axis;
     m_isManipulatorInv = inverse;
     m_settings->endGroup();
@@ -205,8 +125,8 @@ int SDLJoystickSettingsDialog::manipulatorOpenButton()
 
 void SDLJoystickSettingsDialog::setOpenButton(int button)
 {
-    m_settings->beginGroup("Joystick");
-    m_settings->setValue("JoystickOpenButton", button);
+    m_settings->beginGroup("JoystickButtons");
+    m_settings->setValue("Open", button);
     m_openButton = button;
     m_settings->endGroup();
 }
@@ -218,8 +138,8 @@ int SDLJoystickSettingsDialog::manipulatorCloseButton()
 
 void SDLJoystickSettingsDialog::setCloseButton(int button)
 {
-    m_settings->beginGroup("Joystick");
-    m_settings->setValue("JoystickCloseButton", button);
+    m_settings->beginGroup("JoystickButtons");
+    m_settings->setValue("Close", button);
     m_closeButton = button;
     m_settings->endGroup();
 }
@@ -231,8 +151,8 @@ int SDLJoystickSettingsDialog::cameraSelectButton()
 
 void SDLJoystickSettingsDialog::setCameraSelectButton(int button)
 {
-    m_settings->beginGroup("Joystick");
-    m_settings->setValue("JoystickCameraSelectButton", button);
+    m_settings->beginGroup("JoystickButtons");
+    m_settings->setValue("CamSel", button);
     m_cameraSelectButton = button;
     m_settings->endGroup();
 }
@@ -276,6 +196,7 @@ void SDLJoystickSettingsDialog::createLayout(void* joystick_ptr)
     createBox(m_xAxisList.data(), m_joystick);
     createBox(m_yAxisList.data(), m_joystick);
     createBox(m_zAxisList.data(), m_joystick);
+    createBox(m_dAxisList.data(), m_joystick);
     createBox(m_servoXList.data(), m_joystick);
     createBox(m_servoYList.data(), m_joystick);
     createBox(m_rotateManipulatorList.data(), m_joystick);
@@ -287,6 +208,7 @@ void SDLJoystickSettingsDialog::createLayout(void* joystick_ptr)
     addToLayout(m_xAxisList.data(), QString(tr("Тяга на ось X:")), layout, m_xAxisInv.data());
     addToLayout(m_yAxisList.data(), QString(tr("Тяга на ось Y:")), layout, m_yAxisInv.data());
     addToLayout(m_zAxisList.data(), QString(tr("Тяга на ось Z:")), layout, m_zAxisInv.data());
+    addToLayout(m_dAxisList.data(), QString(tr("Тяга на ось D:")), layout, m_dAxisInv.data());
     addToLayout(m_servoXList.data(), QString(tr("Тяга на сервопривод 1:")), layout, m_servoXInv.data());
     addToLayout(m_servoYList.data(), QString(tr("Тяга на сервопривод 2:")), layout, m_servoYInv.data());
     addToLayout(m_rotateManipulatorList.data(), QString(tr("Поворот манипулятора:")), layout, m_manipulatorInv.data());
@@ -294,18 +216,17 @@ void SDLJoystickSettingsDialog::createLayout(void* joystick_ptr)
     addButtonsToLayout(m_closeManipulatorList.data(), QString(tr("Закрыть манипулятор:")), layout);
     addButtonsToLayout(m_cameraSelectButtonList.data(), QString(tr("Переключить камеру:")), layout);
 
-    layout->addWidget(m_joystickStatus.data());
-
-    m_wAxisList.data()->setCurrentIndex(static_cast<int>(wAxis()));
-    m_xAxisList.data()->setCurrentIndex(static_cast<int>(xAxis()));
-    m_yAxisList.data()->setCurrentIndex(static_cast<int>(yAxis()));
-    m_zAxisList.data()->setCurrentIndex(static_cast<int>(zAxis()));
-    m_servoXList.data()->setCurrentIndex(static_cast<int>(servoXAxis()));
-    m_servoYList.data()->setCurrentIndex(static_cast<int>(servoYAxis()));
-    m_rotateManipulatorList.data()->setCurrentIndex(static_cast<int>(manipulatorAxis()));
-    m_openManipulatorList.data()->setCurrentIndex(static_cast<int>(m_openButton));
-    m_closeManipulatorList.data()->setCurrentIndex(static_cast<int>(m_closeButton));
-    m_cameraSelectButtonList.data()->setCurrentIndex(static_cast<int>(m_cameraSelectButton));
+    m_wAxisList.data()->setCurrentIndex(m_wID);
+    m_xAxisList.data()->setCurrentIndex(m_xID);
+    m_yAxisList.data()->setCurrentIndex(m_yID);
+    m_zAxisList.data()->setCurrentIndex(m_zID);
+    m_dAxisList.data()->setCurrentIndex(m_dID);
+    m_servoXList.data()->setCurrentIndex(m_sxID);
+    m_servoYList.data()->setCurrentIndex(m_syID);
+    m_rotateManipulatorList.data()->setCurrentIndex(m_mID);
+    m_openManipulatorList.data()->setCurrentIndex(m_openButton);
+    m_closeManipulatorList.data()->setCurrentIndex(m_closeButton);
+    m_cameraSelectButtonList.data()->setCurrentIndex(m_cameraSelectButton);
     setLayout(layout);
 }
 
@@ -313,45 +234,46 @@ void SDLJoystickSettingsDialog::readSettings(void* joystick_ptr)
 {
     SDLJoystick* m_joystick = (SDLJoystick*) joystick_ptr;
 
-    if(m_joystick == nullptr)
-        return;
+    if(m_joystick == nullptr) return;
 
-    if(!m_joystick->isConnected())
-        return;
-    SDL_JoystickUpdate();
+    if(m_joystick->isConnected())
+        SDL_JoystickUpdate();
+    else return;
 
     m_settings->beginGroup("JoystickAxes");
-    m_zID = static_cast<int>(m_settings->value("JoystickAxisD", D).toInt());
-    m_wID = static_cast<int>(m_settings->value("JoystickAxisW", W).toInt());
-    m_xID = static_cast<int>(m_settings->value("JoystickAxisX", X).toInt());
-    m_yID = static_cast<int>(m_settings->value("JoystickAxisY", Y).toInt());
-    m_zID = static_cast<int>(m_settings->value("JoystickAxisZ", Z).toInt());
-    m_sxID = static_cast<int>(m_settings->value("JoystickServoXAxis", PovX).toInt());
-    m_syID = static_cast<int>(m_settings->value("JoystickServoYAxis", PovY).toInt());
-    m_mID = static_cast<int>(m_settings->value("JoystickManipulatorAxis", U).toInt());
+    m_dID = static_cast<int>(m_settings->value("DID", D).toInt());
+    m_wID = static_cast<int>(m_settings->value("WID", W).toInt());
+    m_xID = static_cast<int>(m_settings->value("XID", X).toInt());
+    m_yID = static_cast<int>(m_settings->value("YID", Y).toInt());
+    m_zID = static_cast<int>(m_settings->value("ZID", Z).toInt());
+    m_sxID = static_cast<int>(m_settings->value("sXID", PovX).toInt());
+    m_syID = static_cast<int>(m_settings->value("sYID", PovY).toInt());
+    m_mID = static_cast<int>(m_settings->value("mID", U).toInt());
     m_settings->endGroup();
 
-    m_settings->beginGroup("JoystickAxesInv");
-    m_isWInv = m_settings->value("JoystickAxisWIsInv", false).toBool();
+    m_settings->beginGroup("JoystickAxes");
+    m_isWInv = m_settings->value("WInverse", false).toBool();
     m_wAxisInv.data()->setChecked(m_isWInv);
-    m_isXInv = m_settings->value("JoystickAxisXIsInv", false).toBool();
+    m_isXInv = m_settings->value("XInverse", false).toBool();
     m_xAxisInv.data()->setChecked(m_isXInv);
-    m_isYInv = m_settings->value("JoystickAxisYIsInv", false).toBool();
+    m_isYInv = m_settings->value("YInverse", false).toBool();
     m_yAxisInv.data()->setChecked(m_isYInv);
-    m_isZInv = m_settings->value("JoystickAxisZIsInv", false).toBool();
+    m_isZInv = m_settings->value("ZInverse", false).toBool();
     m_zAxisInv.data()->setChecked(m_isZInv);
-    m_isServoXInv = m_settings->value("JoystickServoXAxisInv", false).toBool();
+    m_isDInv = m_settings->value("ZInverse", false).toBool();
+    m_dAxisInv.data()->setChecked(m_isDInv);
+    m_isServoXInv = m_settings->value("sXInverse", false).toBool();
     m_servoXInv.data()->setChecked(m_isServoXInv);
-    m_isServoYInv = m_settings->value("JoystickServoYAxisInv", false).toBool();
+    m_isServoYInv = m_settings->value("sYInverse", false).toBool();
     m_servoYInv.data()->setChecked(m_isServoYInv);
-    m_isManipulatorInv = m_settings->value("JoystickManipulatorAxisInv", false).toBool();
+    m_isManipulatorInv = m_settings->value("mInverse", false).toBool();
     m_manipulatorInv->setChecked(m_isManipulatorInv);
     m_settings->endGroup();
 
     m_settings->beginGroup("JoystickButtons");
-    m_openButton = m_settings->value("JoystickOpenButton", 1).toInt();
-    m_closeButton = m_settings->value("JoystickCloseButton", 0).toInt();
-    m_cameraSelectButton = m_settings->value("JoystickCameraSelectButton", 3).toInt();
+    m_openButton = m_settings->value("Open", 1).toInt();
+    m_closeButton = m_settings->value("Close", 0).toInt();
+    m_cameraSelectButton = m_settings->value("CamSel", 3).toInt();
     m_settings->endGroup();
 }
 
@@ -372,6 +294,10 @@ void SDLJoystickSettingsDialog::createConnections()
 
     QObject::connect(m_zAxisList.data(), QOverload<int>::of(&QComboBox::currentIndexChanged), [this](int index) {
         this->setZAxis(index, m_zAxisInv.data()->isChecked());
+    });
+
+    QObject::connect(m_dAxisList.data(), QOverload<int>::of(&QComboBox::currentIndexChanged), [this](int index) {
+        this->setDAxis(index, m_dAxisInv.data()->isChecked());
     });
 
     QObject::connect(m_servoXList.data(), QOverload<int>::of(&QComboBox::currentIndexChanged), [this](int index) {
@@ -418,14 +344,19 @@ void SDLJoystickSettingsDialog::createConnections()
         this->setZAxis(m_zAxisList.data()->currentIndex(), m_zAxisInv.data()->isChecked());
     });
 
+    QObject::connect(m_dAxisInv.data(), &QCheckBox::stateChanged, [this](int index) {
+        Q_UNUSED(index)
+        this->setDAxis(m_dAxisList.data()->currentIndex(), m_dAxisInv.data()->isChecked());
+    });
+
     QObject::connect(m_servoXInv.data(), &QCheckBox::stateChanged, [this](int index) {
         Q_UNUSED(index)
-        this->setZAxis(m_servoXList.data()->currentIndex(), m_servoXInv.data()->isChecked());
+        this->setServoXAxis(m_servoXList.data()->currentIndex(), m_servoXInv.data()->isChecked());
     });
 
     QObject::connect(m_servoYInv.data(), &QCheckBox::stateChanged, [this](int index) {
         Q_UNUSED(index)
-        this->setZAxis(m_servoYList.data()->currentIndex(), m_servoYInv.data()->isChecked());
+        this->setServoYAxis(m_servoYList.data()->currentIndex(), m_servoYInv.data()->isChecked());
     });
 
     QObject::connect(m_manipulatorInv.data(), &QCheckBox::stateChanged, [this](int index) {
