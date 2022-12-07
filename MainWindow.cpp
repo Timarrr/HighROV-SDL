@@ -26,7 +26,7 @@ MainWindow::MainWindow(QWidget* parent)
     createDocks();
     setCentralWidget(m_cameraWidget.data());
     setMinimumSize(640, 480);
-    qDebug() << QString(INI_PATH);
+    qDebug() << "Settings path is: " << QString(settings_path) << Qt::endl;
 }
 
 MainWindow::~MainWindow() {}

@@ -1,8 +1,10 @@
 #include "SDLJoystick.hpp"
+#include "MainWindow.hpp"
 #include "RovSingleton.hpp"
 #include "SDL.h"
 #include "QDebug"
 bool camsel_prev_state = false;
+bool joysick_disconnect_notified = false;
 
 float map(float x, float in_min, float in_max, float out_min, float out_max){
     return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
@@ -10,11 +12,11 @@ float map(float x, float in_min, float in_max, float out_min, float out_max){
 
 SDLJoystick::SDLJoystick(QObject *parent)
     : QObject{parent}
-    , m_settings(new QSettings("RovSettings.ini", QSettings::IniFormat))
+    , m_settings(new QSettings(settings_path, QSettings::IniFormat))
 {
     SDL_Init(SDL_INIT_JOYSTICK);
     m_joystick = SDL_JoystickOpen(0);
-    qDebug() << SDL_JoystickName(m_joystick) << Qt::endl;
+//    qDebug() << SDL_JoystickName(m_joystick) << Qt::endl;
     startTimer(50);
 
 }
@@ -76,7 +78,6 @@ void SDLJoystick::timerEvent(QTimerEvent*){
         m_z_inv = static_cast<int>(m_settings->value("ZInverse").toInt());
         m_w_inv = static_cast<int>(m_settings->value("WInverse").toInt());
         m_d_inv = static_cast<int>(m_settings->value("DInverse").toInt());
-
         // get data from joystick
         m_x = map(SDL_JoystickGetAxis(m_joystick, m_x_id), -32768, 32767, -100, 100) * (-1 * m_x_inv);
         m_y = map(SDL_JoystickGetAxis(m_joystick, m_y_id), -32768, 32767, -100, 100) * (-1 * m_y_inv);
@@ -118,7 +119,6 @@ void SDLJoystick::timerEvent(QTimerEvent*){
         if(!camsel && camsel_prev_state)
             RovSingleton::instance()->control().cameraIndex = 1 - RovSingleton::instance()->control().cameraIndex;
         camsel_prev_state = camsel;
-        qDebug() << "camsel: " << camsel << "prev_camsel: " << camsel_prev_state << "SR latch state: " << m_camsel << Qt::endl;
         if(SDL_JoystickGetButton(m_joystick, 6)) RovSingleton::instance()->setThrustScaleFactor(0.25f);
         if(SDL_JoystickGetButton(m_joystick, 5)) RovSingleton::instance()->setThrustScaleFactor(0.50f);
         if(SDL_JoystickGetButton(m_joystick, 4)) RovSingleton::instance()->setThrustScaleFactor(1.00f);
@@ -129,10 +129,22 @@ void SDLJoystick::timerEvent(QTimerEvent*){
     else{
         if(SDL_NumJoysticks()>0){
             m_joystick = SDL_JoystickOpen(0);
+            if(m_joystick != nullptr)
+                if(isConnected()){
+                    qInfo() << "Joystick found and connected";
+                }
+                else goto conn_failed;
+            else
+            {
+                conn_failed:
+                qInfo() << "Joystick found but failed to connect, please replug it";
+            }
         }
         else{
-            qDebug() << "No joystick found" << Qt::endl;
-
+            if(!joysick_disconnect_notified){
+                qWarning() << "No joystick found" << Qt::endl;
+                joysick_disconnect_notified = true;
+            }
         }
     }
 }

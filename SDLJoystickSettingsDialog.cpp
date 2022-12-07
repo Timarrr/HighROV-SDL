@@ -9,7 +9,7 @@
 
 SDLJoystickSettingsDialog::SDLJoystickSettingsDialog(QWidget* parent, void* joystick_ptr)
     : QDialog(parent)
-    , m_settings(new QSettings("RovSettings.ini", QSettings::IniFormat))
+    , m_settings(new QSettings(settings_path, QSettings::IniFormat))
     , m_wAxisList(new QComboBox(this))
     , m_xAxisList(new QComboBox(this))
     , m_yAxisList(new QComboBox(this))

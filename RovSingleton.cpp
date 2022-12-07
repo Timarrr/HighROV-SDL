@@ -99,15 +99,6 @@ void RovSingleton::createConnections()
                 m_controlData.thrusterPower[4] = directions[4] * (20+z+d);
                 m_controlData.thrusterPower[5] = directions[5] * (-20+z-d);
             }
-//            auto time = std::chrono::system_clock::now();
-//            auto now_ms = std::chrono::time_point_cast<std::chrono::milliseconds>(time);
-//            auto epoch = now_ms.time_since_epoch();
-//            auto value = std::chrono::duration_cast<std::chrono::milliseconds>(epoch);
-//            long duration_now = value.count();
-//            if(m_controlData.axisY>0 && duration+1000<=duration_now){
-//                system("bash -c \"source /home/rcteam/alarm.sh && alarm 1000 500 &\"");
-//                duration = duration_now;
-//            }
 
             if (m_telemetry.version == 2) {
                 auto data = m_controlData.toRangerControlMsgV2();

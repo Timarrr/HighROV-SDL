@@ -106,7 +106,7 @@ int main(int argc, char* argv[])
 
     MainWindow w;
     w.show();
-    qInfo() << "Программа запущена!";
+    qInfo() << "RovUI launched successfully!";
 
     return a.exec();
 }
