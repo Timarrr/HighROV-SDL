@@ -13,6 +13,7 @@
 #include <QDir>
 #include <QString>
 #include <QKeyEvent>
+#define INI_PATH "/.config/RovUI.ini";
 
 class MainWindow : public QMainWindow {
     Q_OBJECT

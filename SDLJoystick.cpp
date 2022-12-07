@@ -77,9 +77,7 @@ void SDLJoystick::timerEvent(QTimerEvent*){
         m_w_inv = static_cast<int>(m_settings->value("WInverse").toInt());
         m_d_inv = static_cast<int>(m_settings->value("DInverse").toInt());
 
-
-
-        // getting data from joystick
+        // get data from joystick
         m_x = map(SDL_JoystickGetAxis(m_joystick, m_x_id), -32768, 32767, -100, 100) * (-1 * m_x_inv);
         m_y = map(SDL_JoystickGetAxis(m_joystick, m_y_id), -32768, 32767, -100, 100) * (-1 * m_y_inv);
         m_z = map(SDL_JoystickGetAxis(m_joystick, m_z_id), -32768, 32767, -100, 100) * (-1 * m_z_inv);

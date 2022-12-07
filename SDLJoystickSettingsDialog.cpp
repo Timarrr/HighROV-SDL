@@ -180,13 +180,13 @@ void SDLJoystickSettingsDialog::createLayout(void* joystick_ptr)
         layout->addLayout(hLayout);
     };
 
-    auto createBox = [this](QComboBox* box, SDLJoystick* m_joystick) {
+    auto createBox = [](QComboBox* box, SDLJoystick* m_joystick) {
         for (int axis = 0; axis < m_joystick->get_num_axes() ; axis++) {
             box->addItem(QString("Ось #%1").arg(axis));
         }
     };
 
-    auto createButtonBox = [this](QComboBox* box, SDLJoystick* m_joystick) {
+    auto createButtonBox = [](QComboBox* box, SDLJoystick* m_joystick) {
         for (int button = 0; button < m_joystick->get_num_buttons(); button++) {
             box->addItem(QString("Кнопка #%1").arg(button));
         }
