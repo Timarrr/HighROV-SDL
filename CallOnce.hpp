@@ -22,7 +22,7 @@ inline static void qCallOnce(Function func, QBasicAtomicInt& flag)
 {
     using namespace CallOnce;
 
-    int protectFlag = flag.fetchAndStoreAcquire(flag.load());
+    int protectFlag = flag.fetchAndStoreAcquire(flag.loadRelaxed());
 
     if (protectFlag == CO_Finished)
         return;

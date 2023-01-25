@@ -26,7 +26,7 @@ MainWindow::MainWindow(QWidget* parent)
     createDocks();
     setCentralWidget(m_cameraWidget.data());
     setMinimumSize(640, 480);
-    qDebug() << "Settings path is: " << QString(settings_path) << Qt::endl;
+    qInfo() << "Loading settings from: " << QString(settings_path) << Qt::endl;
 }
 
 MainWindow::~MainWindow() {}
@@ -116,7 +116,7 @@ void MainWindow::createConnections()
     QObject::connect(m_stopCameraAct.data(), &QAction::triggered, [this](bool) {
         m_cameraWidget->stopCapture();
     });
-    QObject::connect(m_switchCameraAct.data(), &QAction::triggered, [this](bool) {
+    QObject::connect(m_switchCameraAct.data(), &QAction::triggered, [](bool) {
         RovSingleton::instance()->control().cameraIndex = (RovSingleton::instance()->control().cameraIndex + 1) % 2;
     });
     QObject::connect(m_openJoystickSettings.data(), &QAction::triggered, [this](bool) {
@@ -392,7 +392,8 @@ void MainWindow::unmounting() {
     std::string str = "gio mount -ue \"";
     str += flashPath.toStdString();
     str += "\"";
-    system(str.c_str());
+    if(system(str.c_str())!=0)
+        qWarning() << "Unmounting FAILED, retry";
 }
 
 //hotkeys
