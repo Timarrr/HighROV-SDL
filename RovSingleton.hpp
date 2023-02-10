@@ -19,7 +19,11 @@ public:
 
     void setTransmitTime(int time);
 
-    void setThrustScaleFactor(float scale);
+    void setThrustScaleFactorW(float scale);
+    void setThrustScaleFactorX(float scale);
+    void setThrustScaleFactorY(float scale);
+    void setThrustScaleFactorZ(float scale);
+    void setThrustScaleFactorD(float scale);
     int depthRegulator();
 signals:
     void telemetryUpdated();
@@ -37,5 +41,9 @@ private:
 
     RovControl m_controlData;
     RovTelemetry m_telemetry;
-    float m_scaleFactor = 1.0f;
+    float m_scaleFactorW = 1.0f;
+    float m_scaleFactorX = 1.0f;
+    float m_scaleFactorY = 1.0f;
+    float m_scaleFactorZ = 1.0f;
+    float m_scaleFactorD = 1.0f;
 };
