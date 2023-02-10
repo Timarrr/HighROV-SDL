@@ -104,7 +104,8 @@ void RovSingleton::createConnections()
                 auto data = m_controlData.toRangerControlMsgV2();
                 m_udpConnection->transmitDatagram(data);
             } else {
-                m_udpConnection->transmitDatagram(m_controlData.toRangerControlMsgV1());
+//                m_udpConnection->transmitDatagram(m_controlData.toRangerControlMsgV1());
+                qWarning() << "Unsupported ROV firmware version, please update your ROV" << Qt::endl;
             }
         }
     });

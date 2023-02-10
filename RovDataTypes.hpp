@@ -16,32 +16,33 @@ struct RovControl {
     qint8 axisD = 0; //! -100/100;
     qint8 cameraRotation[2] = { 0, 0 };
     qint8 thrusterPower[10] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-    quint8 debugFlag = 0;
+    quint8 debugFlag = 0b00000000;
     qint8 manipulatorRotation = 0; //! -100/100
     qint8 manipulatorOpenClose = 0; //! -1 close/+1 open;
     qint8 cameraIndex = 0;
 
-    QByteArray toRangerControlMsgV1()
-    {
-        QByteArray ba;
+//    unused, deprecated
+//    QByteArray toRangerControlMsgV1()
+//    {
+//        QByteArray ba;
 
-        QDataStream in(&ba, QIODevice::WriteOnly);
-        in.setFloatingPointPrecision(QDataStream::SinglePrecision);
-        in << debugFlag;
-        for (int i = 0; i < 6; i++) {
-            qint8 t = thrusterPower[i];
-            in << t;
-        }
-        in << manipulatorRotation;
-        for (qint8 c : cameraRotation) {
-            in << c;
-        }
-        in << manipulatorOpenClose;
-        in << cameraIndex;
-        in << calculateCRC(ba.data(), ba.size());
+//        QDataStream in(&ba, QIODevice::WriteOnly);
+//        in.setFloatingPointPrecision(QDataStream::SinglePrecision);
+//        in << debugFlag;
+//        for (int i = 0; i < 6; i++) {
+//            qint8 t = thrusterPower[i];
+//            in << t;
+//        }
+//        in << manipulatorRotation;
+//        for (qint8 c : cameraRotation) {
+//            in << c;
+//        }
+//        in << manipulatorOpenClose;
+//        in << cameraIndex;
+//        in << calculateCRC(ba.data(), ba.size());
 
-        return ba;
-    }
+//        return ba;
+//    }
 
     QByteArray toRangerControlMsgV2()
     {
@@ -55,10 +56,6 @@ struct RovControl {
         // begin v1
         in << header_control;
         in << version;
-//        in << axisX;
-//        in << axisY;
-//        in << axisZ;
-//        in << axisW;
         in << debugFlag;
         for (int i = 0; i < 10; i++) {
             qint8 t = thrusterPower[i];
